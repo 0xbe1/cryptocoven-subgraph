@@ -1,4 +1,4 @@
-import { ipfs, json } from '@graphprotocol/graph-ts'
+import { ipfs, json, log } from '@graphprotocol/graph-ts'
 import {
   Transfer as TransferEvent,
   Token as TokenContract
@@ -23,6 +23,7 @@ export function handleTransfer(event: TransferEvent): void {
     let metadata = ipfs.cat(ipfshash + token.tokenURI)
     if (metadata) {
       const value = json.fromBytes(metadata).toObject()
+      log.info("metadata: {}", [metadata.toString()])
       if (value) {
         /* using the metatadata from IPFS, update the token object with the values  */
         const image = value.get('image')
